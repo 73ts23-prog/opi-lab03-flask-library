@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import book_card %}
+{% block title %}Каталог{% endblock %}
+{% block content %}
+<section class="page-intro catalog-intro"><p class="eyebrow">КАТАЛОГ БІБЛІОТЕКИ</p><h1>Обери наступну<br><em>історію.</em></h1><p class="lead">Шість творів української класики. Різні голоси, епохи та світи — усе в одній невеликій добірці.</p></section>
+<div class="catalog-bar"><span>Уся добірка</span><span>{{ books | length }} книжок</span></div>
+<section class="book-grid catalog-grid" aria-label="Добірка книжок">{% for book in books %}{{ book_card(book, loop.index) }}{% endfor %}</section>
+<p class="catalog-note">Каталог ознайомлювальний: на сторінці наведено назви творів, авторів і жанри.</p>
+{% endblock %}

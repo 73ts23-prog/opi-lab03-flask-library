@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Сторінку не знайдено{% endblock %}
+{% block content %}<section class="page-intro error-page"><p class="eyebrow">ПОМИЛКА 404</p><h1>Цієї сторінки<br><em>немає на полиці.</em></h1><p class="lead">Перевір адресу або повернися до знайомих розділів бібліотеки.</p><a class="button" href="{{ url_for('home') }}">Повернутися на головну</a></section>{% endblock %}
