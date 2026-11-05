@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Мій Flask проєкт{% endblock %}</title>
+    <!-- Tailwind CSS 4 через CDN (для навчання та прототипів) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @keyframes slideDown {
+            0% { max-height: 0; opacity: 0; }
+            100% { max-height: 300px; opacity: 1; }
+        }
+        @keyframes slideUp {
+            0% { max-height: 300px; opacity: 1; }
+            100% { max-height: 0; opacity: 0; }
+        }
+        .animate-slide-down {
+            animation: slideDown 0.3s ease-out forwards;
+        }
+        .animate-slide-up {
+            animation: slideUp 0.3s ease-in forwards;
+        }
+        /* Три лінії «бургера»: верхня, середня, нижня */
+        .burger-line {
+            transition: all 0.3s ease-in-out;
+        }
+        .line1 { top: 4px; }
+        .line2 { top: 11px; }
+        .line3 { top: 18px; }
+        /* Відкрите меню: верхня й нижня лінії утворюють хрестик, середня зникає */
+        .open .line1 {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .open .line2 {
+            opacity: 0;
+        }
+        .open .line3 {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-blue-500 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{{ url_for('home') }}" class="text-white text-xl font-bold transition-transform duration-300 hover:scale-110">Мій проєкт</a>
+
+            <!-- Меню для широких екранів -->
+            <div class="hidden md:flex space-x-4">
+                <a href="{{ url_for('home') }}" class="text-white hover:text-blue-200 transition-colors duration-300 hover:underline">Головна</a>
+                <a href="#" class="text-white hover:text-blue-200 transition-colors duration-300 hover:underline">Магазин</a>
+                <a href="{{ url_for('about') }}" class="text-white hover:text-blue-200 transition-colors duration-300 hover:underline">Про нас</a>
+                <a href="#" class="text-white hover:text-blue-200 transition-colors duration-300 hover:underline">Зворотний зв'язок</a>
+            </div>
+
+            <!-- Кнопка меню для мобільних пристроїв -->
+            <button id="mobile-menu-button" type="button" aria-label="Відкрити меню" aria-expanded="false"
+                    class="md:hidden text-white w-6 h-6 relative cursor-pointer focus:outline-none">
+                <span class="burger-line line1 block absolute left-0 h-0.5 w-6 bg-current"></span>
+                <span class="burger-line line2 block absolute left-0 h-0.5 w-6 bg-current"></span>
+                <span class="burger-line line3 block absolute left-0 h-0.5 w-6 bg-current"></span>
+            </button>
+        </div>
+
+        <!-- Мобільне меню (приховане за замовчуванням) -->
+        <div id="mobile-menu" class="hidden md:hidden overflow-hidden">
+            <a href="{{ url_for('home') }}" class="block text-white hover:text-blue-200 py-2 transition duration-300 hover:translate-x-2">Головна</a>
+            <a href="#" class="block text-white hover:text-blue-200 py-2 transition duration-300 hover:translate-x-2">Магазин</a>
+            <a href="{{ url_for('about') }}" class="block text-white hover:text-blue-200 py-2 transition duration-300 hover:translate-x-2">Про нас</a>
+            <a href="#" class="block text-white hover:text-blue-200 py-2 transition duration-300 hover:translate-x-2">Зворотний зв'язок</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto mt-8 p-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isOpen = mobileMenuButton.classList.toggle('open');
+            mobileMenuButton.setAttribute('aria-expanded', isOpen);
+            mobileMenuButton.setAttribute('aria-label', isOpen ? 'Закрити меню' : 'Відкрити меню');
+
+            if (isOpen) {
+                mobileMenu.classList.remove('hidden', 'animate-slide-up');
+                mobileMenu.classList.add('animate-slide-down');
+            } else {
+                mobileMenu.classList.remove('animate-slide-down');
+                mobileMenu.classList.add('animate-slide-up');
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
